@@ -1,0 +1,26 @@
+# Write a program that stores the number 0 in the first four bytes of the .data section, then stores the number 1 in the next four bytes, 
+# then stores the number 2 in the four bytes after that and so on. Do this for numbers 0 through 24.
+
+.text
+.globl main
+
+main:
+	lui	$2, 0x1001	# Initalize the register 
+	ori	$3, $0, 0	# Load 0 into $3
+	ori	$5, $0, 0	# Load 0 into $5
+	ori 	$6, $0, 24	# Load 24 into $6
+	
+	loop:
+	beq	$5, $6, done	# Branch if $5 is less than 24
+	lw	$4, 0($2)	# Load the array
+	addiu	$2, $2, 4	# 4 bytes
+	addiu	$4, $4, 1	# Add 1 to the array
+	sw	$4, array	# Store the word in the array
+	addiu	$5, $5, 1	# Add 1 to the count
+	
+	j	loop
+	
+	done:	sll $0, $0, 0
+
+.data
+	array:   .space    100

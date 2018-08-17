@@ -1,0 +1,56 @@
+# Write a program that determines the minimum and the maximum element in the array. 
+# Assume that the array has at least one element (in which case, that element will be both the minimum and maximum.)
+# Leave the results in registers.
+
+.text
+.globl main
+
+main:
+	ori $5, $0, 0	# Set $5 to 0 for the count
+	ori $2, $0, 0	# Set $3 to 0
+	ori $9, $0, 1	# Set $9 to 1
+	lui $3, 0x1001	# Initalize the register
+	lw $3, size	# Load the word size
+	lui $6, 0x1001 	# Set $6 as the array pointer
+	addiu $6, $6, 4	# Add 4 to $6 for the 4 bytes in the array
+	
+	loop:	
+	beq	$5, $3, done	# Branch if $5 equals $3
+	sll	$0, $0, 0
+	lw 	$7, 0($6)	# Load the array
+	
+	bgez	$7, TestCount1	# Branch if the array is greater than or equal to 0
+	bltz	$7, TestCount2	# Branch is the array is less than 0
+	
+	TestCount1:
+	slt	$8, $7, $15	# Set $15 to the contents of $8
+	bne	$2, $8, count3 	# Branch if $2 doesn't equal $8
+	
+	count1:
+	positive: addiu	$15, $7, 0 # Use $15 to hold largest positive number
+	addiu 	$5, $5, 1	# Incrament the count
+	addiu 	$6, $6, 4	# Incrament the array
+	j	loop
+	
+	TestCount2:
+	slt	$9, $7, $14	# Set $14 to the contents of $9
+	beq	$2, $9, count3 	# Branch if $2 and $9 are equal
+	
+	count2:
+	negative: addiu	$14, $7, 0 # Use $14 to hold largest negative number
+	addiu 	$5, $5, 1	# Inccament the count
+	addiu 	$6, $6, 4	# Incrament the array
+	j	loop
+	
+	count3:
+	addiu 	$5, $5, 1	# Incrament the count
+	addiu 	$6, $6, 4	# Incrament the array
+	j	loop
+	
+	
+	done:	sll	$0, $0, 0
+	
+.data
+	size:	.word 8
+	array:	.word 23, -12, 45, -32, 52, -72, 8, 13
+	

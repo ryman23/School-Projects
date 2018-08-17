@@ -1,0 +1,22 @@
+# Evaluate (3x+7) / (2x+8)
+# Use values 0 and 1 for x
+# Finally, try -4
+# Store results in $10
+
+.text
+.globl main
+
+main:
+	ori $15, $0, 1		# Store x
+	ori $14, $0, 3 		# Store 3 
+	multu $15, $14   	# Multi 3 and x
+	mflo $13		# Store results in $13
+	addu $13, $13, 7	# Add 7
+	
+	ori $12, $0, 2		# Store 2
+	multu $12, $15		# Multi 2 and x
+	mflo $11		# Store results in $11
+	addu $11, $11, 8	# Add 8
+	
+	divu $10, $13, $11	# Divide (3x+7) / (2x+8)
+	mflo $10		# Store results in $10

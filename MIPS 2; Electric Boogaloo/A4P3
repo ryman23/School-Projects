@@ -1,0 +1,126 @@
+# Write a subroutine that takes three arguments, A, X, and Y. It then computes A*X*Y and returns it.
+# Use the subroutine to evaluate the following for various values of u and v:
+# 5u2 - 12uv + 6v2
+
+.text
+.globl main
+
+main:	
+	ori	$5, $0, 0	# Hold the value of a in $5
+	ori	$6, $0, 0	# Hold the value of x in $6
+	ori	$7, $0, 0	# Hold the value of y in $7
+	ori	$8, $0, 0	# Hold the value of u in $8
+	ori	$9, $0, 0	# Hold the value of v in $9
+	ori	$10, $0, 5	# Hold 5
+	ori	$11, $0, 12	# Hold 12
+	ori	$12, $0, 6	# Hold 6
+	
+	# Get the values for the variables
+	jal	askForA
+	jal	askForX
+	jal	askForY
+	
+	mult	$5, $6	# Multiply a and x
+	mflo	$6	# Store the result
+	mult	$6, $7	# Multiply ax and y
+	mflo	$7	# Store the result
+	
+	# Display a*x*y
+	li	$2, 1
+	move	$4, $7
+	syscall
+	li	$2, 4
+	la	$4, AXY
+	syscall
+	
+	# Get values for u and v
+	jal	askForU
+	jal	askForV
+	
+	mult	$8, $8		# Square u
+	mflo	$13, 		# Store it
+	mult	$13, $10	# Multiply uu and 5	
+	mflo	$10		# Store 1st term
+	
+	mult	$8, $9		# Multiply u and v
+	mflo	$14		# Store it
+	mult	$14, $11	# Multiply uv and 12
+	mflo	$11		# Store 2nd term
+	
+	mult	$9, $9		# Square v
+	mflo	$15		# Store it
+	mult	$12, $15	# Multiply vv and 6
+	mflo	$12		# Store 3rd term
+	
+	sub	$10, $10, $11	# Do 5u^2 - 12uv
+	add	$10, $10, $12	# Do (5u^2 -12ux) + 6v^2
+	
+	# Display the result
+	li	$2, 1
+	move	$4, $10
+	syscall
+	li	$2, 4
+	la	$4, final
+	syscall
+	
+	li	$2, 10
+	syscall
+	
+	# Get a vlaue for a
+	askForA:	
+	li	$2, 4
+	la	$4, getA
+	syscall
+	li	$2, 5
+	syscall
+	move	$5, $2
+	jr	$31
+	
+	# Get a vlaue for x
+	askForX:	
+	li	$2, 4
+	la	$4, getX
+	syscall
+	li	$2, 5
+	syscall
+	move	$6, $2
+	jr	$31
+	
+	# Get a value for y
+	askForY:	
+	li	$2, 4
+	la	$4, getY
+	syscall
+	li	$2, 5
+	syscall
+	move	$7, $2
+	jr	$31
+	
+	# Get a value for u
+	askForU:	
+	li	$2, 4
+	la	$4, getU
+	syscall
+	li	$2, 5
+	syscall
+	move	$8, $2
+	jr	$31
+	
+	# Get a value for v
+	askForV:	
+	li	$2, 4
+	la	$4, getV
+	syscall
+	li	$2, 5
+	syscall
+	move	$9, $2
+	jr	$31
+	
+.data
+	getA:	.asciiz	"Enter a value for a:"
+	getX:	.asciiz	"Enter a value for x:"
+	getY:	.asciiz	"Enter a value for y:"
+	AXY:	.asciiz " is the value for a*x*y\n"
+	getU:	.asciiz	"Enter a value for u:"
+	getV:	.asciiz	"Enter a value for v:"
+	final:	.asciiz	" is the result for 5*u^2 - 12*u*v + 6*v^2"

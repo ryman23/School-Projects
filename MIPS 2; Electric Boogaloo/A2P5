@@ -1,0 +1,19 @@
+# Compute the sum of 1+2+3...+99+100
+# Store the results in $15
+
+.text
+.globl main
+
+main:
+	ori $15, $0, 0		# Set $15 to 0 to hold the sum
+	ori $14, $0, 1		# Initalize to hold the current value
+	ori $13, $0, 5050	# Sum
+	
+	run:
+		beq $13, $15, exit
+		addu $15, $15, $14
+		addu $14, $14, 1
+		exit: sll $0, $0, 0
+
+		j run
+			

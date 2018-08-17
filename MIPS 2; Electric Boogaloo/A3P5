@@ -1,0 +1,58 @@
+# Write a program that repeatedly prompts the user for the number of miles traveled and the 
+# gallons of gasoline consumed, and then prints out the miles per gallon. Use integer math. 
+# Exit when the user enters 0 for the number of miles.
+
+.text
+.globl main
+
+main:
+	loop:
+	
+	# Ask for milles traveled
+	ori	$6, $0, 0		# Set $6 to 0
+	li	$2, 4			# Load imidiate from $2
+	la	$4, milesTraveled	
+	syscall
+	
+	# Collect the miles traveled
+	li	$2, 5		
+	syscall
+	
+	addu	$6, $2, $6		# Add the contents of $6 and $2
+	beq	$6, $0, done		# Branch if $6 equals 0
+	
+	# Ask for the amount of gasoline comsumed
+	li	$2, 4			
+	la	$4, gasConsumed	
+	syscall
+	
+	# Collect the gallons
+	li	$2, 5			
+	syscall
+	
+	# Calculate the results
+	add	$7, $2, $7		# Add $7 and $2
+	div	$6, $7			# Divide the miles and gallons used
+	mflo	$9			# Store in $9
+	
+	# Display the results
+	li	$2, 1		
+	move	$4, $9			# Move $9 to $4
+	syscall
+	
+	li 	$2, 4			
+	la	$4, displayMessage	
+	
+	syscall 
+	
+	j	loop
+	
+	done:	li	$2, 10
+		syscall
+
+
+.data
+	milesTraveled:	.asciiz	"Enter the amount of miles traveled: "
+	gasConsumed:	.asciiz	"Enter the gallons of gas consumed: " 
+	displayMessage:	.asciiz " MPG achieved this trip.\n "
+		

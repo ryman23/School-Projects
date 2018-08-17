@@ -1,0 +1,19 @@
+#Evaluate 3x-5y
+#Set $8 to be x
+#Set $9 to be y
+#Store results in $10
+
+.text
+.globl main
+
+main:
+	ori $8, $0, 5	#Set $8 to 2
+	ori $9, $0, 2	#Set $9 to 1
+	add $8, $8, 5	
+	add $8, $8, 5	#Result now 15(3*5)
+	add $9, $9, 2
+	add $9, $9, 2
+	add $9, $9, 2
+	add $9, $9, 2	#Result now 10(5*2)
+	
+	sub $10, $8, $9	#Subtract 15 - 10 = 5

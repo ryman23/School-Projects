@@ -1,0 +1,28 @@
+# Take the bytes stored in data and calcualte the average of the values
+# Store the result in $10 and store the data
+
+.text
+.globl main
+
+main:
+	lbu $15, byte1		# Load byte 1
+	lbu $14, byte2		# Load byte 2
+	addu $10, $15, $14	# Add bytes 1 and 2
+	lbu $15, byte3		# Load byte 3
+	addu $10, $10, $15	# Add byte 3
+	lbu $15, byte4		# Load byte 4
+	addu $10, $10, $15	# Add byte 4
+	lbu $15, byte5		# Load byte 5
+	addu $10, $10, $15	# Add byte 5
+	
+	divu $10, $10, 5	# Divide the sum by 5
+	mflo $10		# Move to $10
+	sb $10, average		# Store the result as a byte
+	
+.data
+      byte1: .byte   12
+      byte2: .byte   97
+      byte3: .byte  133
+      byte4: .byte   82
+      byte5: .byte  236
+      average: .byte

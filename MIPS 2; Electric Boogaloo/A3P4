@@ -1,0 +1,34 @@
+# Initialize a base register for each array (use the la instruction.) 
+# Now implement a loop that adds corresponding elements in the first two arrays and stores the result 
+#in the corresponding element of the result array. 
+#Do this by moving each of the three base registers to its next array element after each addition.
+
+.text
+.globl main
+main:
+	lw 	$2, size	# Load the word size
+	la	$3, array1	# Load array1
+	la	$4, array2	# Load array2
+	la	$5, result	# Load array3
+	ori	$6, $0, 0	# Set $6 to 0  for the count 
+	
+	loop:
+	beq	$6, $2, done	# Branch if count is equal to the size
+	lw	$7, 0($3)	# Load array1 value into $7
+	lw	$8, 0($4)	# Load array2 value into $8
+	add	$9, $7, $8	# Add the array values into $9
+	sw	$9, result	# Store the result from $9
+	
+	addiu	$3, $3, 4	# Add 1 byte to array1
+	addiu	$4, $4, 4	# Add 1 byte to array2 
+	addiu	$5, $5, 4	# Add 1 byte to result
+	addiu	$6, $6, 1	# Add 1 to the count
+	j	loop
+	
+	done:	sll	$0, $0, 0
+
+.data
+	size:    .word       7
+	array1:  .word     -30, -23, 56, -43, 72, -18, 71
+	array2:  .word      45,  23, 21, -23, -82,  0, 69
+	result:  .word       0,   0,  0,   0,   0,  0,  0

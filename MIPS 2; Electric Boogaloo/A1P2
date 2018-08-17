@@ -1,0 +1,9 @@
+#Put the pattern 0xFFFFFFFF into $1
+
+.text
+.globl main
+
+main:
+	ori $1, $0, 0x01	#Start with 01 in $1
+	or  $1, $0, $0		#OR with $0 to get 0
+	nor $1, $0, $0		#XOR the 0 to get all F's

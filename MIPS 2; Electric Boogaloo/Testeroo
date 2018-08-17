@@ -1,0 +1,26 @@
+# $8 is x. Write a program that computes 13x. Results in $10
+# Also do -13x and store in $11
+# Let $8 be x. Write a program that computes 13x and stores it in $10.
+# Extend the program so that is computes -13x and stores it in $11.
+
+.text
+.globl main
+
+main:
+	# 13x stored in $10
+	# -13x stored in $11
+	ori $8, $0, -1
+	addu $10, $8, $8
+	addu $10, $10, $8
+	addu $10, $10, $8
+	addu $10, $10, $8
+	addu $10, $10, $8
+	addu $10, $10, $8
+	addu $10, $10, $8
+	addu $10, $10, $8
+	addu $10, $10, $8
+	addu $10, $10, $8
+	addu $10, $10, $8
+	addu $10, $10, $8
+	subu $11, $0, $10
+	

@@ -1,0 +1,31 @@
+# A temperature in $8 is allowed to be within either of two ranges: 20 <= temp <= 40 and 60 <= temp <= 80.
+# Write a program that sets a flag (register $3) to 1 if the temperature is in an allowed range 
+# and to 0 if the temperature is not in an allowed range.
+
+.text
+.globl main
+
+main:
+	ori $8, $0, 30	# Test temp of 30
+	ori $3, $0, 1	# Flag of 1(True) or flag of 0(False)
+	ori $2, $0, 0	# Scratch for 20-40
+	ori $4, $0, 0	# Scratch for 60-80
+	
+	# Test 20 <= Temp <= 40
+	sltiu $2, $8, 41	# If temp < 41, set $3 to 0
+	beq $2, $0, out		# If $2 is 0, branch to out
+	
+	sgeu $2, $8, 20		# If temp, >= 20, set $3 to 0
+	beq $2, $0, done2	# If $2 is 0, branch to out2
+	
+	out: ori $3, $0, 0
+
+	# Test 60 <= Temp <= 80
+	sltiu $2, $8, 81	# If temp < 81,  set $3 to 1
+	bne $2, $0, out2	# If $4 is 0, branch to out3
+	
+	sltiu $2, $8, 60	# If temp >= 60, delay
+	beq $2, $0, done2	# If $4 is 0, branch to done
+	
+	out2: ori $3, $0, 1
+	done2: sll $0, $0, 0

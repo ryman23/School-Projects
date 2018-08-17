@@ -1,0 +1,83 @@
+# Evaluate 3*a*b - 2*b*c - 5*a + 20*a*c - 16 
+# Use 1 for a, 2 for b, and 3 for c
+
+.text	
+
+.globl main
+main:
+	ori	$5, $0, 3	# Store 3 for first term
+	ori 	$6, $0, 2	# Store 2 for second term
+	ori	$7, $0, 5	# Store 5 for third term	
+	ori	$8, $0, 20	# Store 20 for fourth term
+	ori	$9, $0, 16	# Store 16 for fifth term
+	ori	$10, $0, 0	# Register for a
+	ori	$11, $0, 0	# Register for b
+	ori	$12, $0, 0	# Register for c
+	
+	li	$2, 4
+	la	$4, prompt
+	syscall
+	
+	li	$2, 4
+	la	$4, intA
+	syscall
+	
+	# Get the value for a
+	li	$2, 5
+	syscall
+	
+	add	$10, $2, $10
+	
+	li 	$2, 4
+	la	$4, intB
+	syscall
+	
+	# Get the value for b
+	li	$2, 5
+	syscall
+	
+	add	$11, $2, $11
+	
+	li	$2, 4
+	la	$4, intC
+	syscall
+	
+	# Get the value for c
+	li	$2, 5
+	syscall
+	
+	add	$12, $2, $12
+	
+	# Compute the results
+	mult	$10, $11
+	mflo	$15
+	mult	$15, $5
+	mflo	$15	# First term calculated
+	mult	$11, $12
+	mflo	$16
+	mult	$16, $6
+	mflo	$16	# Second term calculated
+	mult	$12, $7
+	mflo	$17	# Third term calculated
+	mult	$10, $12
+	mflo	$18
+	mult	$18, $8
+	mflo	$18	# Fourth term calculated
+	sub	$19, $15, $16
+	sub	$20, $19, $17
+	add	$21, $20, $18
+	sub	$22, $21, $9
+	
+	# Disply the results
+	li	$2, 1
+	move	$4, $22
+	syscall
+	
+	li	$2, 10
+	syscall
+	
+.data
+	prompt:	.asciiz	"This program will solve the equation 3ab - 2bc -5a + 20ac - 16\n"
+	intA:	.asciiz	"Enter a value for a:"
+	intB:	.asciiz	"Enter a value for b:"
+	intC:	.asciiz	"Enter a value for c:"
